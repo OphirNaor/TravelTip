@@ -11,13 +11,24 @@ window.onGetUserPos = onGetUserPos;
 window.onSearch = onSearch;
 window.onDelete = onDelete;
 
+var gUserCurrLoc = {
+    lat: 0,
+    lng: 0
+}
+
 function onInit() {
-  mapService
-    .initMap()
-    .then(() => {
-      console.log("Map is ready");
-    })
-    .catch(() => console.log("Error: cannot init map"));
+    addEventListeners();
+    mapService.initMap()
+        .then((map) => {
+            mapClickedEv(map);
+            // gMap = map;
+            onSearch(map)
+        })
+        .catch(() => console.log('Error: cannot init map'));
+    locService.getLocs()
+        .then(locs => {
+            renderLocations(locs)
+        })
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -85,9 +96,12 @@ function onSearch() {
     });
 }
 
-function onDelete(id) {
-  locService.deleteLoc(id);
-  onGetLocs();
+function onDelete(ev) {
+    locService.deleteLoc(ev.target.getAttribute('data-i'))
+    locService.getLocs()
+        .then(locs => {
+            renderLocations(locs)
+        })
 }
 
 //7.a. Go – pans the map to that location to look up what have we done in PLACEKEEPER

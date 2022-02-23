@@ -9,14 +9,19 @@
 </head>
 
 <body>
-    <header class="main-header">
-
+    <main>
         <h1>Travel Tip</h1>
-        <div class="search-bar">
-            <input type="text" value="" placeholder="Enter location"><button class="search-place"
-                onclick="onSearch()">Search</button>
-        </div>
-
+        <section class="search-container">
+            <p>Location: <span class="user-pos"></span></p>
+            <div class="location-menu">
+                <button class="btn-add-loc">Add Location</button>
+                <button class="btn-user-pos">My Location</button>
+                <div id="floating-panel">
+                    <input class="input-address" id="address" type="textbox" placeholder="Enter Location" />
+                    <input class="submit-address" id="submit" type="button" value="Go" />
+                </div>
+            </div>
+        </section>
     </header>
     <main class="main-container">
     <section class="map-container">
