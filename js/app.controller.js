@@ -6,6 +6,10 @@ window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;   
 window.onGetUserPos = onGetUserPos;
+window.findPlace = findPlace; // added 2 future functions that we will need
+window.onDelete = onDelete; // added 2 future functions that we will need
+
+
 
 function onInit() {
     mapService.initMap()
@@ -55,6 +59,16 @@ function onPanTo() {
 function renderLoc(locs){
 
 }
+
+//GOOGLE GEOCODE API KEY AIzaSyD0XAO24vPlaRm9kjMFkABKNxoBrCrz7nQ
+function findPlace(){
+
+}
+
+// function onDelete(id){
+//     locService.deleteLoc(id)
+//     onGetLocs();
+// }
 
 //7.a. Go – pans the map to that location to look up what have we done in PLACEKEEPER
 // 8. Create a “my-location” button that pan the map to the user’s location. Function SAVE like in meme
