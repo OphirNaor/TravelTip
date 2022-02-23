@@ -7,7 +7,7 @@ window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;   
 window.onGetUserPos = onGetUserPos;
 window.findPlace = findPlace; // added 2 future functions that we will need
-window.onDelete = onDelete; // added 2 future functions that we will need
+window.onDelete = onDelete; 
 
 
 
