@@ -12,23 +12,23 @@ window.onSearch = onSearch;
 window.onDelete = onDelete;
 
 var gUserCurrLoc = {
-    lat: 0,
-    lng: 0
-}
+  lat: 0,
+  lng: 0,
+};
 
 function onInit() {
-    addEventListeners();
-    mapService.initMap()
-        .then((map) => {
-            mapClickedEv(map);
-            // gMap = map;
-            onSearch(map)
-        })
-        .catch(() => console.log('Error: cannot init map'));
-    locService.getLocs()
-        .then(locs => {
-            renderLocations(locs)
-        })
+  addEventListeners();
+  mapService
+    .initMap()
+    .then((map) => {
+      mapClickedEv(map);
+      // gMap = map;
+      onSearch(map);
+    })
+    .catch(() => console.log("Error: cannot init map"));
+  locService.getLocs().then((locs) => {
+    renderLocations(locs);
+  });
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
@@ -39,17 +39,17 @@ function getPosition() {
   });
 }
 
-function onAddMarker() {
+function addEventListeners() {
   console.log("Adding a marker");
   mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
 }
 
 function onGetLocs() {
-    locService.getLocs().then((locs) => {
-        console.log("Locations:", locs);
-        var strHtml = locs.map(
-            (loc) =>
-                `<tr>
+  locService.getLocs().then((locs) => {
+    console.log("Locations:", locs);
+    var strHtml = locs.map(
+      (loc) =>
+        `<tr>
               <td>${loc.name}</td>
               <td>${loc.lat}</td>
               <td>${loc.lng}</td>
@@ -57,10 +57,10 @@ function onGetLocs() {
               <td><button onclick="onDeleteLoc(${loc.lat}, ${loc.lng})">Delete</button></td>
               <td><button onclick="onCopyLink(${loc.lat}, ${loc.lng})">Copy Link</button></td>
           </tr>`
-        );
-        document.querySelector(".locs").innerHTML = strHtml.join("");
-        document.querySelector(".locs-container").classList.remove("hide");
-    });
+    );
+    document.querySelector(".locs").innerHTML = strHtml.join("");
+    document.querySelector(".locs-container").classList.remove("hide");
+  });
 }
 
 function onGetUserPos() {
@@ -80,28 +80,50 @@ function onPanTo() {
   mapService.panTo(35.6895, 139.6917);
 }
 
-function renderLoc(locs) {}
+// function renderLoc(locs) {}
 
 //GOOGLE GEOCODE API KEY AIzaSyD0XAO24vPlaRm9kjMFkABKNxoBrCrz7nQ
 
-function onSearch() {
-    const cityName = document.querySelector('.search-place').value;
-    locService.getCoordsByName(cityName).then(res => {
-        mapService.panTo(res.lat, res.lng);
-        locService.saveLoc(cityName, res.lat, res.lng);
-        onGetLocs();
-        mapService.addMarker(res, cityName);
-        const infoWindow = mapService.getInfoWindow();
-        infoWindow.close();
-    });
+function onSearch(map) {
+  const geocoder = new google.maps.Geocoder();
+  document.querySelector(".submit-address").addEventListener("click", () => {
+    geocode(geocoder, map);
+  });
+}
+
+function geocode(geocoder, resultsMap) {
+  const address = document.querySelector(".input-address").value;
+  geocoder.geocode({ address: address }, (results, status) => {
+    if (status === "OK") {
+      resultsMap.setCenter(results[0].geometry.location);
+
+      new google.maps.Marker({
+        map: resultsMap,
+        position: results[0].geometry.location,
+      });
+    } else {
+      alert("Geocode was not successful for the following reason: " + status);
+    }
+    onAddLoc(
+      address,
+      results[0].geometry.location.lat(),
+      results[0].geometry.location.lng()
+    );
+  });
+}
+
+function onAddLoc(name, lat, lng, updatedAt) {
+  locService.addLocation(name, lat, lng, updatedAt);
+  locService.getLocs().then((locs) => {
+    renderLocations(locs);
+  });
 }
 
 function onDelete(ev) {
-    locService.deleteLoc(ev.target.getAttribute('data-i'))
-    locService.getLocs()
-        .then(locs => {
-            renderLocations(locs)
-        })
+  locService.deleteLoc(ev.target.getAttribute("data-i"));
+  locService.getLocs().then((locs) => {
+    renderLocations(locs);
+  });
 }
 
 //7.a. Go – pans the map to that location to look up what have we done in PLACEKEEPER

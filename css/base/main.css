@@ -1,5 +1,55 @@
-body {
-    background-color: coral;
-    margin: 5px;
+* {
+    box-sizing: border-box;
 }
 
+html {
+    font-family: Georgia, 'Times New Roman', Times, serif
+}
+
+body {
+    background-color: coral;
+}
+
+h1 {
+    text-align: center;
+}
+
+main{
+    padding: 15px;
+}
+.search-container{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+.user-pos{
+    width: 45%;
+}
+.location-menu{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 50%;
+}
+.locations-container {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.locations-info {
+    display: flex;
+    flex-direction: column;
+    width: 45%;
+}
+
+.map-container {
+    width: 50%;
+}
+
+.locations-table {
+    background-color: lightslategrey;
+    height: 200px;
+}

@@ -2,7 +2,7 @@ import { storageService } from './storage-service.js';
 import { utilsService } from './utils-service.js';
 
 export const locService = {
-    getLocs,addLocation,deleteLoc,
+    getLocs,addLocation, deleteLoc,
 
 }
 
@@ -12,7 +12,7 @@ createLocations()
 
 
 function createLocations(){
-    var locs = storageService.loadFromStorage(KEY);
+    var locs = storageService.loadFromStorage(KEY)
     if(!locs || locs.length === 0) {
         locs = [
             createLocation('Berlin',52.52437, 13.41053,0,0 ),
@@ -44,10 +44,11 @@ function createLoc(name, lat , lng, updatedAt=0) {
     }
 
 
-function addLocation(name, lat, lng, weather, updatedAt) {
-    const addLoc = createLocation(name, lat, lng, weather, updatedAt);
+function addLocation(name, lat, lng, updatedAt) {
+    const addLoc = createLocation(name, lat, lng, updatedAt);
     gLocs.push(addLoc)
     storageService.saveToStorage(KEY,gLocs)
+}
 
 function deleteLoc(id) {
     const locIdx = gLocs.findIndex(loc => {
@@ -55,5 +56,4 @@ function deleteLoc(id) {
     })
     gLocs.splice(locIdx, 1)
     storageService.save(KEY, gLocs)
-}
 }
