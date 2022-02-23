@@ -2,7 +2,7 @@ import { storageService } from './storage-service.js';
 
 export const locService = {
     getLocs, 
-    deleteLoc,
+//     deleteLoc,
 }
 
 const KEY = 'locationDB'
@@ -12,8 +12,8 @@ const KEY = 'locationDB'
 //should we also make a getrandomId function for our Id??? 
 
 const gLocs = storageService.load ('locationDB') || [
-    { id: '1' , name: 'Greatplace', lat: 32.047104, lng: 34.832384 , createdAt: Date.now(), updatedAt: '' }, 
-    { id: '2' , name: 'Neveragain', lat: 32.047201, lng: 34.832581 , createdAt: Date.now(), updatedAt: '' },
+    { id:  [], name: 'Greatplace', lat: 32.047104, lng: 34.832384 , createdAt: Date.now(), updatedAt: '' }, 
+    { id: [] , name: 'Neveragain', lat: 32.047201, lng: 34.832581 , createdAt: Date.now(), updatedAt: '' },
 ]
 
 function getLocs() {
