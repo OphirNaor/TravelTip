@@ -1,7 +1,7 @@
 import { storageService } from './storage-service.js';
 
 export const locService = {
-    getLocs
+    getLocs, deleteLoc
 
 }
 
@@ -28,13 +28,13 @@ function getLocs() {
 
 
 
-// function deleteLoc(id) {
-//     const locIdx = gLocs.findIndex(loc => {
-//         loc.id === id
-//     })
-//     gLocs.splice(locIdx,1)
-//     storageService.save(KEY,gLocs)
-// }
+function deleteLoc(id) {
+    const locIdx = gLocs.findIndex(loc => {
+        loc.id === id
+    })
+    gLocs.splice(locIdx, 1)
+    storageService.save(KEY, gLocs)
+}
 //get firstly the index of the ID of loc
 //we should use the splice method , to splice the .locs
 //render the map again 

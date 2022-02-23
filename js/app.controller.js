@@ -1,13 +1,15 @@
 import { locService } from './services/loc.service.js'
 import { mapService } from './services/map.service.js'
+import { storageService } from './services/storage-service.js'
+import { utilsService } from './services/utils-service.js'
 
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
-window.findPlace = findPlace; // added 2 future functions that we will need
-window.onDelete = onDelete; 
+window.onFindPlace = onFindPlace; // added 2 future functions that we will need
+window.onDelete = onDelete;
 
 
 
@@ -35,8 +37,32 @@ function onAddMarker() {
 function onGetLocs() {
     locService.getLocs()
         .then(locs => {
-            console.log('Locations:', locs)
-            document.querySelector('.locs').innerText = JSON.stringify(locs)
+            console.log('location', locs);
+            const strHTML = locs.map(loc => {
+                return ` <ul>
+               <li>
+                   ID:${loc.id}
+               </li>
+               <li>
+                   Name:${loc.name}
+               </li>
+               <li>
+                   Lat:${loc.lat}
+               </li>
+               <li>
+                   Lng:${loc.lng}
+               </li>
+               <li>
+                   CreatedAt: ${loc.createdAt}
+               </li>
+               <li>
+                   UpdatedAt: ${loc.updatedAt}
+               </li>
+           </ul>`
+            })
+            document.querySelector('.locs-info').innerText = strHTML.join('')
+
+            // document.querySelector('.locs').innerText = JSON.stringify(locs)
         })
 }
 
@@ -56,19 +82,28 @@ function onPanTo() {
     mapService.panTo(35.6895, 139.6917);
 }
 
-// function renderLoc(locs){
-
-// }
-
-//GOOGLE GEOCODE API KEY AIzaSyD0XAO24vPlaRm9kjMFkABKNxoBrCrz7nQ
-function findPlace(){
+function renderLoc(locs) {
 
 }
 
-// function onDelete(id){
-//     locService.deleteLoc(id)
-//     onGetLocs();
-// }
+//GOOGLE GEOCODE API KEY AIzaSyD0XAO24vPlaRm9kjMFkABKNxoBrCrz7nQ
+function onFindPlace() {
+    const elInput = document.querySelector('input').value;
+    mapService.geoCode(place)
+
+
+
+
+}
+
+function onDelete(id) {
+    locService.deleteLoc(id)
+    onGetLocs();
+}
 
 //7.a. Go – pans the map to that location to look up what have we done in PLACEKEEPER
 // 8. Create a “my-location” button that pan the map to the user’s location. Function SAVE like in meme
+
+
+
+
