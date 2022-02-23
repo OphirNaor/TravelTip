@@ -3,12 +3,13 @@ import { mapService } from "./services/map.service.js";
 import { storageService } from "./services/storage-service.js";
 import { utilsService } from "./services/utils-service.js";
 
-//NEEDS REPAIRING: MY LOCATION IS WORKING WITHOUT MARKER/ 
-//REPAIR SEARCH FUNCTION,WORKING BAD/ 
+//NEEDS REPAIRING: MY LOCATION IS WORKING WITHOUT MARKER/
+//REPAIR SEARCH FUNCTION,WORKING BAD/
 //ADDING LOCATION NEEDS IMPROVE/
-//TODO 
-//REFACTOR CODE, REFACTOR FILES, MAKE BETTER CSS, ADD WEATHER
-
+//ADDING ID TO TABLE/
+//ADDING WEATHER/
+//TODO
+//REFACTOR CODE VARS&FOO NAMES, REFACTOR FILES, MAKE BETTER CSS, ADD WEATHER
 
 window.onload = onInit;
 
