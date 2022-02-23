@@ -2,7 +2,7 @@ import { storageService } from './storage-service.js';
 import { utilsService } from './utils-service.js';
 
 export const locService = {
-    getLocs, deleteLoc,
+    getLocs,addLocation,deleteLoc,
 
 }
 

@@ -4,7 +4,6 @@ export const mapService = {
     initMap,
     addMarker,
     panTo,
-    getInfoWindow
 }
 
 var gMap;
@@ -51,8 +50,4 @@ function _connectGoogleApi() {
         elGoogleApi.onload = resolve;
         elGoogleApi.onerror = () => reject('Google script failed to load')
     })
-}
-
-function getInfoWindow() {
-    return infoWindow;
 }
