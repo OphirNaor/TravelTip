@@ -11,12 +11,12 @@ var gLocs;
 createLocations()
 
 
-function createLocations(){
-    var locs = storageService.loadFromStorage(KEY)
-    if(!locs || locs.length === 0) {
+function createLocations() {
+    var locs = storageService.loadFromStorage(KEY);
+    if (!locs || locs.length === 0) {
         locs = [
-            createLocation('Berlin',52.52437, 13.41053,0,0 ),
-            createLocation('New-York',40.71427, -74.00597,0,0)
+            createLoc('Berlin',52.52437, 13.41053,0,0 ),
+            createLoc('New-York',40.71427, -74.00597,0,0)
         ];
     }
     gLocs = locs,
@@ -45,7 +45,7 @@ function createLoc(name, lat , lng, updatedAt=0) {
 
 
 function addLocation(name, lat, lng, updatedAt) {
-    const addLoc = createLocation(name, lat, lng, updatedAt);
+    const addLoc = createLoc(name, lat, lng, updatedAt);
     gLocs.push(addLoc)
     storageService.saveToStorage(KEY,gLocs)
 }
@@ -55,5 +55,5 @@ function deleteLoc(id) {
         loc.id === id
     })
     gLocs.splice(locIdx, 1)
-    storageService.save(KEY, gLocs)
+    storageService.saveToStorage(KEY, gLocs)
 }

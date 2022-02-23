@@ -3,13 +3,14 @@ import { mapService } from "./services/map.service.js";
 import { storageService } from "./services/storage-service.js";
 import { utilsService } from "./services/utils-service.js";
 
+//NEEDS REPAIRING: MY LOCATION IS WORKING WITHOUT MARKER/ 
+//REPAIR SEARCH FUNCTION,WORKING BAD/ 
+//ADDING LOCATION NEEDS IMPROVE/
+//TODO 
+//REFACTOR CODE, REFACTOR FILES, MAKE BETTER CSS, ADD WEATHER
+
+
 window.onload = onInit;
-window.onAddMarker = onAddMarker;
-window.onPanTo = onPanTo;
-window.onGetLocs = onGetLocs;
-window.onGetUserPos = onGetUserPos;
-window.onSearch = onSearch;
-window.onDelete = onDelete;
 
 var gUserCurrLoc = {
   lat: 0,
@@ -22,7 +23,7 @@ function onInit() {
     .initMap()
     .then((map) => {
       mapClickedEv(map);
-      // gMap = map;
+      gMap = map;
       onSearch(map);
     })
     .catch(() => console.log("Error: cannot init map"));
@@ -40,44 +41,68 @@ function getPosition() {
 }
 
 function addEventListeners() {
-  console.log("Adding a marker");
-  mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
-}
-
-function onGetLocs() {
-  locService.getLocs().then((locs) => {
-    console.log("Locations:", locs);
-    var strHtml = locs.map(
-      (loc) =>
-        `<tr>
-              <td>${loc.name}</td>
-              <td>${loc.lat}</td>
-              <td>${loc.lng}</td>
-              <td><button onclick="onGoToLoc(${loc.lat}, ${loc.lng})">Go</button></td>
-              <td><button onclick="onDeleteLoc(${loc.lat}, ${loc.lng})">Delete</button></td>
-              <td><button onclick="onCopyLink(${loc.lat}, ${loc.lng})">Copy Link</button></td>
-          </tr>`
+  document.querySelector(".btn-add-loc").addEventListener("click", (ev) => {
+    // console.log("Adding a marker");
+    const title = prompt("Name desired location");
+    mapService.addMarker(
+      { lat: gUserCurrLoc.lat, lng: gUserCurrLoc.lng },
+      title
     );
-    document.querySelector(".locs").innerHTML = strHtml.join("");
-    document.querySelector(".locs-container").classList.remove("hide");
+    onAddLoc(title, gUserCurrLoc.lat, gUserCurrLoc.lng);
+  });
+  document.querySelector(".btn-user-pos").addEventListener("click", (ev) => {
+    getPosition()
+      .then((pos) => {
+        console.log("User position is:", pos.coords);
+        document.querySelector(
+          ".user-pos"
+        ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`;
+        mapService.panTo(pos.coords.latitude, pos.coords.longitude);
+      })
+      .catch((err) => {
+        console.log("err!!!", err);
+      });
   });
 }
 
-function onGetUserPos() {
-  getPosition()
-    .then((pos) => {
-      console.log("User position is:", pos.coords);
-      document.querySelector(
-        ".user-pos"
-      ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`;
-    })
-    .catch((err) => {
-      console.log("err!!!", err);
+function renderLocations(locs) {
+  const strHtmls = locs.map((loc) => {
+    return `<tr>
+        <td>${loc.name}</td>
+        <td>${loc.createdAt}</td>
+        <td><button class="btn-go" data-lat="${loc.lat}" data-lng="${loc.lng}">Go to</button></td>
+        <td><button class="btn-delete" data-i="${loc.id}">X</button></td>
+      </tr>`;
+  });
+  document.querySelector(".locs").innerHTML = strHtmls.join("");
+  [...document.querySelectorAll(".btn-go")].forEach((item) => {
+    item.addEventListener("click", (ev) => {
+      onGoToLoc(ev);
     });
+  });
+
+  [...document.querySelectorAll(".btn-delete")].forEach((item) => {
+    item.addEventListener("click", (ev) => {
+      onDelete(ev);
+    });
+  });
 }
-function onPanTo() {
-  console.log("Panning the Map");
-  mapService.panTo(35.6895, 139.6917);
+
+function mapClickedEv(map) {
+  map.addListener("click", (mapsMouseEvent) => {
+    var latitude = mapsMouseEvent.latLng.lat();
+    var longtitude = mapsMouseEvent.latLng.lng();
+    gUserCurrLoc.lat = latitude;
+    gUserCurrLoc.lng = longtitude;
+  });
+}
+function onGoToLoc(ev) {
+  const locLat = ev.target.getAttribute("data-lat");
+  const locLng = ev.target.getAttribute("data-lng");
+  console.log(locLat, locLng);
+
+  mapService.panTo(locLat, locLng);
+  mapService.addMarker({ lat: +locLat, lng: +locLng });
 }
 
 // function renderLoc(locs) {}
