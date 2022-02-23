@@ -1,7 +1,7 @@
-import { locService } from './services/loc.service.js'
-import { mapService } from './services/map.service.js'
-import { storageService } from './services/storage-service.js'
-import { utilsService } from './services/utils-service.js'
+import { locService } from "./services/loc.service.js";
+import { mapService } from "./services/map.service.js";
+import { storageService } from "./services/storage-service.js";
+import { utilsService } from "./services/utils-service.js";
 
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
@@ -11,35 +11,34 @@ window.onGetUserPos = onGetUserPos;
 window.onFindPlace = onFindPlace; // added 2 future functions that we will need
 window.onDelete = onDelete;
 
-
-
 function onInit() {
-    mapService.initMap()
-        .then(() => {
-            console.log('Map is ready');
-        })
-        .catch(() => console.log('Error: cannot init map'));
+  mapService
+    .initMap()
+    .then(() => {
+      console.log("Map is ready");
+    })
+    .catch(() => console.log("Error: cannot init map"));
 }
 
 // This function provides a Promise API to the callback-based-api of getCurrentPosition
 function getPosition() {
-    console.log('Getting Pos');
-    return new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject)
-    })
+  console.log("Getting Pos");
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject);
+  });
 }
 
 function onAddMarker() {
-    console.log('Adding a marker');
-    mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
+  console.log("Adding a marker");
+  mapService.addMarker({ lat: 32.0749831, lng: 34.9120554 });
 }
 
 function onGetLocs() {
-    locService.getLocs()
-        .then(locs => {
-            console.log('location', locs);
-            const strHTML = locs.map(loc => {
-                return ` <ul>
+  locService.getLocs().then((locs) => {
+    console.log("location", locs);
+    const strHTML = locs.map((loc) => {
+      return ` <div class="loc-info"> 
+                <ul>
                <li>
                    ID:${loc.id}
                </li>
@@ -58,52 +57,46 @@ function onGetLocs() {
                <li>
                    UpdatedAt: ${loc.updatedAt}
                </li>
-           </ul>`
-            })
-            document.querySelector('.locs-info').innerText = strHTML.join('')
+           </ul>
+           <button onclick="onPanTo(${loc.lat},${loc.lng})">Go to</button>
+           <button onclick="onDelete('${loc.id}')">Delete</button>
+                <div>`;
+    });
+    document.querySelector(".location-table").innerText = strHTML.join("");
 
-            // document.querySelector('.locs').innerText = JSON.stringify(locs)
-        })
+    // document.querySelector('.locs').innerText = JSON.stringify(locs)
+  });
 }
 
 function onGetUserPos() {
-    getPosition()
-        .then(pos => {
-            console.log('User position is:', pos.coords);
-            document.querySelector('.user-pos').innerText =
-                `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`
-        })
-        .catch(err => {
-            console.log('err!!!', err);
-        })
+  getPosition()
+    .then((pos) => {
+      console.log("User position is:", pos.coords);
+      document.querySelector(
+        ".user-pos"
+      ).innerText = `Latitude: ${pos.coords.latitude} - Longitude: ${pos.coords.longitude}`;
+    })
+    .catch((err) => {
+      console.log("err!!!", err);
+    });
 }
 function onPanTo() {
-    console.log('Panning the Map');
-    mapService.panTo(35.6895, 139.6917);
+  console.log("Panning the Map");
+  mapService.panTo(35.6895, 139.6917);
 }
 
-function renderLoc(locs) {
-
-}
+function renderLoc(locs) {}
 
 //GOOGLE GEOCODE API KEY AIzaSyD0XAO24vPlaRm9kjMFkABKNxoBrCrz7nQ
 function onFindPlace() {
-    const elInput = document.querySelector('input').value;
-    mapService.geoCode(place)
-
-
-
-
+  const elInput = document.querySelector("input").value;
+  mapService.geoCode(place);
 }
 
 function onDelete(id) {
-    locService.deleteLoc(id)
-    onGetLocs();
+  locService.deleteLoc(id);
+  onGetLocs();
 }
 
 //7.a. Go – pans the map to that location to look up what have we done in PLACEKEEPER
 // 8. Create a “my-location” button that pan the map to the user’s location. Function SAVE like in meme
-
-
-
-
