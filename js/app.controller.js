@@ -8,7 +8,7 @@ window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
 window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
-window.onFindPlace = onFindPlace; // added 2 future functions that we will need
+window.onSearch = onSearch;
 window.onDelete = onDelete;
 
 
@@ -35,35 +35,22 @@ function onAddMarker() {
 }
 
 function onGetLocs() {
-    locService.getLocs()
-        .then(locs => {
-            console.log('location', locs);
-            const strHTML = locs.map(loc => {
-                return ` <ul>
-               <li>
-                   ID:${loc.id}
-               </li>
-               <li>
-                   Name:${loc.name}
-               </li>
-               <li>
-                   Lat:${loc.lat}
-               </li>
-               <li>
-                   Lng:${loc.lng}
-               </li>
-               <li>
-                   CreatedAt: ${loc.createdAt}
-               </li>
-               <li>
-                   UpdatedAt: ${loc.updatedAt}
-               </li>
-           </ul>`
-            })
-            document.querySelector('.locs-info').innerText = strHTML.join('')
-
-            // document.querySelector('.locs').innerText = JSON.stringify(locs)
-        })
+    locService.getLocs().then((locs) => {
+        console.log("Locations:", locs);
+        var strHtml = locs.map(
+            (loc) =>
+                `<tr>
+              <td>${loc.name}</td>
+              <td>${loc.lat}</td>
+              <td>${loc.lng}</td>
+              <td><button onclick="onGoToLoc(${loc.lat}, ${loc.lng})">Go</button></td>
+              <td><button onclick="onDeleteLoc(${loc.lat}, ${loc.lng})">Delete</button></td>
+              <td><button onclick="onCopyLink(${loc.lat}, ${loc.lng})">Copy Link</button></td>
+          </tr>`
+        );
+        document.querySelector(".locs").innerHTML = strHtml.join("");
+        document.querySelector(".locs-container").classList.remove("hide");
+    });
 }
 
 function onGetUserPos() {
@@ -87,13 +74,25 @@ function renderLoc(locs) {
 }
 
 //GOOGLE GEOCODE API KEY AIzaSyD0XAO24vPlaRm9kjMFkABKNxoBrCrz7nQ
-function onFindPlace() {
-    const elInput = document.querySelector('input').value;
-    mapService.geoCode(place)
+// function onFindPlace() {
+//     const elInput = document.querySelector('input').value;
+//     mapService.geoCode(place)
 
 
 
 
+// }
+
+function onSearch() {
+    const cityName = document.querySelector('.search-place').value;
+    locService.getCoordsByName(cityName).then((res) => {
+        mapService.panTo(res.lat, res.lng);
+        locService.saveLoc(cityName, res.lat, res.lng);
+        onGetLocs();
+        mapService.addMarker(res, cityName);
+        const infoWindow = mapService.getInfoWindow();
+        infoWindow.close();
+    });
 }
 
 function onDelete(id) {

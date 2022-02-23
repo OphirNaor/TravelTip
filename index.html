@@ -14,7 +14,7 @@
         <h1>Travel Tip</h1>
         <div class="search-bar">
             <input type="text" value="" placeholder="Enter location"><button class="search-place"
-                onclick="onFindPlace()">Search</button>
+                onclick="onSearch()">Search</button>
         </div>
 
     </header>
@@ -30,16 +30,27 @@
         <button onclick="onDelete()" class="btn-delete">Delete</button>
     </section>
 
-    <div class="locs-info">
-
+    <div class="locs-container hide">
+        <h3>Locations:</h3>
+        <table>
+            <thead>
+                <td>Name</td>
+                <td>Latitude</td>
+                <td>Longitude</td>
+                <td>Go there!</td>
+                <td>Delete location</td>
+            </thead>
+            <tbody class="locs"></tbody>
+        </table>
     </div>
+
 
     <section class="location-info">
         <p>You are at: <span class="user-pos"></span></p>
         <p>Locations: <span class="locs"></span></p>
     </section>
 
-
+    <script src="lib/axios.js"></script>
     <script type="module" src="js/app.controller.js"></script>
 </body>
 

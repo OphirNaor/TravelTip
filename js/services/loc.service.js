@@ -1,7 +1,11 @@
 import { storageService } from './storage-service.js';
 
 export const locService = {
-    getLocs, deleteLoc
+    getLocs,
+    deleteLoc,
+    getPlaceAddress,
+    getCoordsByName,
+    saveLoc
 
 }
 
@@ -26,6 +30,11 @@ function getLocs() {
 
 // function createLoc()
 
+function saveLoc(name, lat, lng) {
+    gLocs.push({ name, lat, lng });
+    storageService.saveToStorage('locationDB', gLocs);
+}
+
 
 
 function deleteLoc(id) {
@@ -38,3 +47,27 @@ function deleteLoc(id) {
 //get firstly the index of the ID of loc
 //we should use the splice method , to splice the .locs
 //render the map again 
+
+function getPlaceAddress(lat, lng) {
+
+    return axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyD0XAO24vPlaRm9kjMFkABKNxoBrCrz7nQ`)
+        .then((res) => {
+            console.log(res.data);
+            const address = res.data.results[0].formatted_address
+            return address
+        })
+        .catch((err) => { console.log('Error', err); })
+}
+
+function getCoordsByName(cityName) {
+    return axios.get(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${cityName}&key=AIzaSyD0XAO24vPlaRm9kjMFkABKNxoBrCrz7nQ`
+    )
+        .then((res) => {
+            const coords = {
+                lat: res.data.results[0].geometry.location.lat,
+                lng: res.data.results[0].geometry.location.lng,
+            };
+            return coords
+        });
+}
