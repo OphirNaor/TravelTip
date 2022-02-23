@@ -1,5 +1,6 @@
 export const locService = {
     getLocs
+
 }
 
 const KEY = 'location'
@@ -7,8 +8,8 @@ const KEY = 'location'
 
 
 const locs = [
-    { id: '1' , name: 'Greatplace', lat: 32.047104, lng: 34.832384 , createdAt: 000, updatedAt: '' }, 
-    { id: '2' , name: 'Neveragain', lat: 32.047201, lng: 34.832581 , createdAt: 000, updatedAt: '' },
+    // { name: 'Greatplace', lat: 32.047104, lng: 34.832384, createdAt, updatedAt },
+    // { name: 'Neveragain', lat: 32.047201, lng: 34.832581, createdAt, updatedAt },
 ]
 
 function getLocs() {
@@ -19,12 +20,11 @@ function getLocs() {
     });
 }
 
-function createLoc()
+// function createLoc()
 
 
 
-function deleteLoc()
+// function deleteLoc()
 //get firstly the index of the ID of loc
 //we should use the splice method , to splice the .locs
 //render the map again 
-

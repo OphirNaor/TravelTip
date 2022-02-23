@@ -4,7 +4,7 @@ import { mapService } from './services/map.service.js'
 window.onload = onInit;
 window.onAddMarker = onAddMarker;
 window.onPanTo = onPanTo;
-window.onGetLocs = onGetLocs;   
+window.onGetLocs = onGetLocs;
 window.onGetUserPos = onGetUserPos;
 
 function onInit() {
@@ -52,9 +52,9 @@ function onPanTo() {
     mapService.panTo(35.6895, 139.6917);
 }
 
-function renderLoc(locs){
+// function renderLoc(locs){
 
-}
+// }
 
 //7.a. Go – pans the map to that location to look up what have we done in PLACEKEEPER
 // 8. Create a “my-location” button that pan the map to the user’s location. Function SAVE like in meme
