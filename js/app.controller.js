@@ -71,7 +71,7 @@ function renderLocations(locs) {
     return `<tr>
         <td>${loc.name}</td>
         <td>${loc.createdAt}</td>
-        <td><button class="btn-go" data-lat="${loc.lat}" data-lng="${loc.lng}">Go to</button></td>
+        <td><button class="btn-go-to" data-lat="${loc.lat}" data-lng="${loc.lng}">Go to</button></td>
         <td><button class="btn-delete" data-i="${loc.id}">X</button></td>
       </tr>`;
   });
@@ -108,7 +108,7 @@ function onGoToLoc(ev) {
 
 // function renderLoc(locs) {}
 
-//GOOGLE GEOCODE API KEY AIzaSyD0XAO24vPlaRm9kjMFkABKNxoBrCrz7nQ
+//GOOGLE GEOCODE API KEY 
 
 function onSearch(map) {
   const geocoder = new google.maps.Geocoder();
