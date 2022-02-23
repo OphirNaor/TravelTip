@@ -14,7 +14,7 @@
         <h1>Travel Tip</h1>
         <div class="search-bar">
             <input type="text" value="" placeholder="Enter location"><button class="search-place"
-                onclick="onFindPlace()">Search</button>
+                onclick="onSearch()">Search</button>
         </div>
 
     </header>
@@ -31,12 +31,14 @@
         <button onclick="onDelete()" class="btn-delete">Delete</button>
     </section>
 
+    <div class="locs-info">
+
     </div>
 
-    <!-- <section class="location-info"> -->
+    <section class="location-info">
         <p>You are at: <span class="user-pos"></span></p>
-        <div class=location-table></div>
-    <!-- </section> -->
+        <p>Locations: <span class="locs"></span></p>
+    </section>
 </main>
     <script type="module" src="js/app.controller.js"></script>
 </body>

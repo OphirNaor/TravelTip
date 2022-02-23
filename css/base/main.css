@@ -4,30 +4,3 @@ body {
 
 }
 
-.location-table {
-    gap: 10px;
-    display: grid;
-    grid-template-areas: "location-table location-table";
-  }
-  
-  .loc-info {
-    background-color: rgb(209, 243, 255);
-    align-items: center;
-    flex-wrap: wrap;
-    display: flex;
-    flex-direction: column;
-    border-radius: 200px;
-    text-decoration: none;
-    width: 300px;
-    padding: 15px;
-  }
-  
-  .loc-info button {
-    margin-bottom: 5px;
-    justify-content: center;
-    width: 80px;
-  }
-  
-  li {
-    list-style: none;
-  }

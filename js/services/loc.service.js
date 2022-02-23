@@ -1,20 +1,27 @@
 import { storageService } from './storage-service.js';
+import { utilsService } from './utils-service.js';
 
 export const locService = {
-    getLocs, deleteLoc
+    getLocs, deleteLoc,
 
 }
 
 const KEY = 'locationDB'
+var gLocs;
+createLocations()
 
-//changed the const locs to gLocs, added storageservice function and limit of request so we dont get blocked, 
-//not sure if i did it right so please CHECK, added Date.now() function for createdAt , now we will need to add one.
-//should we also make a getrandomId function for our Id??? 
 
-const gLocs = storageService.load('locationDB') || [
-    { id: [], name: 'Greatplace', lat: 32.047104, lng: 34.832384, createdAt: Date.now(), updatedAt: '' },
-    { id: [], name: 'Neveragain', lat: 32.047201, lng: 34.832581, createdAt: Date.now(), updatedAt: '' },
-]
+function createLocations(){
+    var locs = storageService.loadFromStorage(KEY);
+    if(!locs || locs.length === 0) {
+        locs = [
+            createLocation('Berlin',52.52437, 13.41053,0,0 ),
+            createLocation('New-York',40.71427, -74.00597,0,0)
+        ];
+    }
+    gLocs = locs,
+    storageService.saveToStorage(KEY,locs)
+}
 
 function getLocs() {
     return new Promise((resolve, reject) => {
@@ -24,9 +31,23 @@ function getLocs() {
     });
 }
 
-// function createLoc()
+function createLoc(name, lat , lng, updatedAt=0) {
+    var newLoc = {
+        id: utilsService.makeId,
+        name,
+        lat,
+        lng,
+        createdAt: new Date(Date.now()).toLocaleString(),
+        updatedAt
+    }
+    return newLoc;
+    }
 
 
+function addLocation(name, lat, lng, weather, updatedAt) {
+    const addLoc = createLocation(name, lat, lng, weather, updatedAt);
+    gLocs.push(addLoc)
+    storageService.saveToStorage(KEY,gLocs)
 
 function deleteLoc(id) {
     const locIdx = gLocs.findIndex(loc => {
@@ -35,6 +56,4 @@ function deleteLoc(id) {
     gLocs.splice(locIdx, 1)
     storageService.save(KEY, gLocs)
 }
-//get firstly the index of the ID of loc
-//we should use the splice method , to splice the .locs
-//render the map again 
+}
